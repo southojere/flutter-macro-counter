@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "678515677930",
+    "firebase_url": "https://flutter-macro-counter-app.firebaseio.com",
+    "project_id": "flutter-macro-counter-app",
+    "storage_bucket": "flutter-macro-counter-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678515677930:android:3ce4eaedeee5d31ccf5593",
+        "android_client_info": {
+          "package_name": "com.example.macro_counter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "678515677930-a03f8rltuhg1obvel29qq98us6a1o8gm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeTUN7_66E26Tp_Sw3iey2nFuO1TAGMOo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "678515677930-a03f8rltuhg1obvel29qq98us6a1o8gm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
