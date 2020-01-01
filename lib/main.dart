@@ -4,6 +4,7 @@ import 'package:macro_counter_app/models/Macro.dart';
 import 'package:macro_counter_app/widgets/food_list.dart';
 import 'package:macro_counter_app/widgets/macro_inputs.dart';
 import 'package:macro_counter_app/widgets/macros.dart';
+import 'package:macro_counter_app/widgets/screens/settings_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -42,16 +43,15 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   // TODO: set from database
   List<Macro> macros = [
-    new Macro(label: 'Carbohydrates', value: 78, goalValue: 360),
+    new Macro(label: 'Carbohydrates', value: 78, goalValue: 365),
     new Macro(label: 'Protein', value: 43, goalValue: 120),
     new Macro(label: 'Fats', value: 10, goalValue: 60)
   ];
 
   List<Food> foodLibrary = [];
 
-
-  void quickAddMacros (Food foodToAdd) {
-     setState(() {
+  void quickAddMacros(Food foodToAdd) {
+    setState(() {
       macros[0].value += foodToAdd.carbs;
       macros[1].value += foodToAdd.protein;
       macros[2].value += foodToAdd.fat;
@@ -93,18 +93,42 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+  void updateTargets(newCarbTarget, newProteinTarget, newFatTarget) {
+    setState(() {
+      macros[0].goalValue = newCarbTarget;
+      macros[1].goalValue = newProteinTarget;
+      macros[2].goalValue = newFatTarget;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.add), onPressed: () => _startAddMacros(context))
+              icon: Icon(Icons.add), onPressed: () => _startAddMacros(context)),
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SettingsScreen(
+                          macros: macros,
+                          updateTargets: updateTargets,
+                        )),
+              );
+            },
+          )
         ],
         title: Text('Dashboard'),
       ),
       body: Column(
-        children: <Widget>[Macros(macros), FoodList(foodLibrary, deleteFood,quickAddMacros)],
+        children: <Widget>[
+          Macros(macros),
+          FoodList(foodLibrary, deleteFood, quickAddMacros)
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _startAddMacros(context),
