@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:macro_counter_app/models/Food.dart';
+import 'package:provider/provider.dart';
+import 'package:macro_counter_app/models/User.dart';
 
 class MacroInputs extends StatefulWidget {
   final Function addMacros;
@@ -37,7 +39,7 @@ class _MacroInputState extends State<MacroInputs> {
     _fatController.clear();
   }
 
-  _onSaveFood() {
+  _onSaveFood(User currentUser) {
     print('on save');
     String name = _nameController.text;
     if(name == '') {
@@ -51,11 +53,13 @@ class _MacroInputState extends State<MacroInputs> {
         double.parse(_fatController.text == '' ? '0.0' : _fatController.text);
 
     Food newFood = new Food(name: name, carbs: carbs, protein: protein, fat: fat);
-    widget.addFood(newFood);
+    widget.addFood(newFood, currentUser);
   }
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
+
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
@@ -90,7 +94,7 @@ class _MacroInputState extends State<MacroInputs> {
               IconButton(
                 icon: Icon(Icons.save),
                 tooltip: 'Save this entry to your library',
-                onPressed: () =>  _onSaveFood(),
+                onPressed: () =>  _onSaveFood(user),
                 color: Theme.of(context).primaryColor,
               ),
               RaisedButton(

@@ -1,10 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:macro_counter_app/models/Food.dart';
 import 'package:macro_counter_app/models/Macro.dart';
+import 'package:macro_counter_app/models/UserFirestoreData.dart';
 import 'package:macro_counter_app/screens/settings/settings_screen.dart';
+import 'package:macro_counter_app/services/database.dart';
 import 'package:macro_counter_app/widgets/food_list.dart';
 import 'package:macro_counter_app/widgets/macro_inputs.dart';
 import 'package:macro_counter_app/widgets/macros.dart';
+import 'package:provider/provider.dart';
+import 'package:macro_counter_app/models/User.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -12,6 +17,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   // TODO: set from database
   List<Macro> macros = [
     new Macro(label: 'Carbohydrates', value: 78, goalValue: 365),
@@ -46,7 +52,8 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void addFood(Food newFoodEntry) {
+  void addFood(Food newFoodEntry, User user) {
+    DatabaseService(uid: user.uid).addFoodToList(newFoodEntry);
     setState(() {
       foodLibrary.add(newFoodEntry);
     });
@@ -74,38 +81,45 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.add), onPressed: () => _startAddMacros(context)),
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SettingsScreen(
-                          macros: macros,
-                          updateTargets: updateTargets,
-                        )),
-              );
-            },
-          )
-        ],
-        title: Text('Dashboard'),
+    final user = Provider.of<User>(context);
+
+    print(user.uid);
+    return StreamProvider<UserData>.value(
+      value: DatabaseService(uid: user.uid).userData,
+      child: Scaffold(
+        appBar: AppBar(
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () => _startAddMacros(context)),
+            IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SettingsScreen(
+                            macros: macros,
+                            updateTargets: updateTargets,
+                          )),
+                );
+              },
+            )
+          ],
+          title: Text('Dashboard'),
+        ),
+        body: Column(
+          children: <Widget>[
+            Macros(macros),
+            FoodList(foodLibrary, deleteFood, quickAddMacros)
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => _startAddMacros(context),
+          tooltip: 'Increment',
+          child: Icon(Icons.add),
+        ), // This trailing comma makes auto-formatting nicer for build methods.
       ),
-      body: Column(
-        children: <Widget>[
-          Macros(macros),
-          FoodList(foodLibrary, deleteFood, quickAddMacros)
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _startAddMacros(context),
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
