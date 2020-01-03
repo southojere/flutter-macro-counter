@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:macro_counter_app/models/Food.dart';
 import 'package:macro_counter_app/models/UserFirestoreData.dart';
 
 class DatabaseService {
   final uid;
-  DatabaseService({this.uid});
+  DatabaseService({@required this.uid});
 
   // collection ref
   final CollectionReference userDataCollection =
@@ -84,4 +85,31 @@ class DatabaseService {
       "fat": newFood.fat,
     });
   }
+
+  // update current carbs for this user
+  void _addCarbs(double carbs) {
+    userDataCollection.document("${uid}").updateData({
+      "currentCarbs": FieldValue.increment(carbs),
+    });
+  }
+
+  void _addProtein(double protein) {
+    userDataCollection.document("${uid}").updateData({
+      "currentProtein": FieldValue.increment(protein),
+    });
+  }
+
+  void _addFat(double fat) {
+    userDataCollection.document("${uid}").updateData({
+      "currentFat": FieldValue.increment(fat),
+    });
+  }
+
+  void addNewMacros({double carbs, double protein, double fat}) {
+    _addCarbs(carbs);
+    _addProtein(protein);
+    _addFat(fat);
+  }
+
+
 }

@@ -17,7 +17,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   // TODO: set from database
   List<Macro> macros = [
     new Macro(label: 'Carbohydrates', value: 78, goalValue: 365),
@@ -27,7 +26,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<Food> foodLibrary = [];
 
-  void quickAddMacros(Food foodToAdd) {
+  void quickAddMacros(Food foodToAdd, User user) {
+    DatabaseService(uid: user.uid).addNewMacros(
+        carbs: foodToAdd.carbs, protein: foodToAdd.protein, fat: foodToAdd.fat);
     setState(() {
       macros[0].value += foodToAdd.carbs;
       macros[1].value += foodToAdd.protein;
@@ -35,7 +36,9 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void addMacros(double carb, double protein, double fat) {
+  void addMacros(double carb, double protein, double fat, User user) {
+    DatabaseService(uid: user.uid)
+        .addNewMacros(carbs: carb, protein: protein, fat: fat);
     setState(() {
       macros[0].value += carb;
       macros[1].value += protein;

@@ -24,7 +24,7 @@ class _MacroInputState extends State<MacroInputs> {
   final _proteinController = TextEditingController();
   final _fatController = TextEditingController();
 
-  _onSubmit() {
+  _onSubmit(User user) {
     double carbs = double.parse(
         _carbsController.text == '' ? '0.0' : _carbsController.text);
     double protein = double.parse(
@@ -32,7 +32,7 @@ class _MacroInputState extends State<MacroInputs> {
     double fat =
         double.parse(_fatController.text == '' ? '0.0' : _fatController.text);
 
-    widget.addMacros(carbs, protein, fat);
+    widget.addMacros(carbs, protein, fat, user);
 
     _carbsController.clear();
     _proteinController.clear();
@@ -42,7 +42,7 @@ class _MacroInputState extends State<MacroInputs> {
   _onSaveFood(User currentUser) {
     print('on save');
     String name = _nameController.text;
-    if(name == '') {
+    if (name == '') {
       return;
     }
     double carbs = double.parse(
@@ -52,7 +52,8 @@ class _MacroInputState extends State<MacroInputs> {
     double fat =
         double.parse(_fatController.text == '' ? '0.0' : _fatController.text);
 
-    Food newFood = new Food(name: name, carbs: carbs, protein: protein, fat: fat);
+    Food newFood =
+        new Food(name: name, carbs: carbs, protein: protein, fat: fat);
     widget.addFood(newFood, currentUser);
   }
 
@@ -68,25 +69,21 @@ class _MacroInputState extends State<MacroInputs> {
             controller: _nameController,
             decoration: InputDecoration(labelText: 'Name (optional)'),
             keyboardType: TextInputType.text,
-            onSubmitted: (_) => _onSubmit(),
           ),
           TextField(
             controller: _carbsController,
             decoration: InputDecoration(labelText: 'Carbs'),
             keyboardType: TextInputType.number,
-            onSubmitted: (_) => _onSubmit(),
           ),
           TextField(
             controller: _proteinController,
             decoration: InputDecoration(labelText: 'Protein'),
             keyboardType: TextInputType.number,
-            onSubmitted: (_) => _onSubmit(),
           ),
           TextField(
             controller: _fatController,
             decoration: InputDecoration(labelText: 'Fat'),
             keyboardType: TextInputType.number,
-            onSubmitted: (_) => _onSubmit(),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -94,14 +91,14 @@ class _MacroInputState extends State<MacroInputs> {
               IconButton(
                 icon: Icon(Icons.save),
                 tooltip: 'Save this entry to your library',
-                onPressed: () =>  _onSaveFood(user),
+                onPressed: () => _onSaveFood(user),
                 color: Theme.of(context).primaryColor,
               ),
               RaisedButton(
                 child: Text('Add Macros'),
                 color: Theme.of(context).primaryColor,
                 textColor: Theme.of(context).textTheme.button.color,
-                onPressed: _onSubmit,
+                onPressed: () => _onSubmit(user),
               ),
             ],
           )

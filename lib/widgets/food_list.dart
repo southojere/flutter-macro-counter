@@ -15,6 +15,7 @@ class FoodList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    final user = Provider.of<User>(context);
     final userAppData = Provider.of<UserData>(context);
 
     return Flexible(
@@ -62,7 +63,7 @@ class FoodList extends StatelessWidget {
                         IconButton(
                           icon: Icon(Icons.add),
                           onPressed: () {
-                            this.addFood(foodItem);
+                            this.addFood(foodItem,user);
                           },
                           color: Theme.of(context).primaryColor,
                         ),
