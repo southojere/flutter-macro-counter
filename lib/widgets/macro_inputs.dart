@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:macro_counter_app/models/Food.dart';
 import 'package:provider/provider.dart';
 import 'package:macro_counter_app/models/User.dart';
+import 'package:macro_counter_app/models/UserFirestoreData.dart';
 
 class MacroInputs extends StatefulWidget {
   final Function addMacros;
@@ -60,6 +61,7 @@ class _MacroInputState extends State<MacroInputs> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
+    // final userAppData = Provider.of<UserData>(context);
 
     return Padding(
       padding: const EdgeInsets.all(10.0),

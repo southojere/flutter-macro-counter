@@ -17,11 +17,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // TODO: set from database
+  
   List<Macro> macros = [
-    new Macro(label: 'Carbohydrates', value: 78, goalValue: 365),
-    new Macro(label: 'Protein', value: 43, goalValue: 120),
-    new Macro(label: 'Fats', value: 10, goalValue: 60)
+    new Macro(label: 'Carbohydrates', value: 0, goalValue: 365),
+    new Macro(label: 'Protein', value: 0, goalValue: 120),
+    new Macro(label: 'Fats', value: 0, goalValue: 60)
   ];
 
   List<Food> foodLibrary = [];
@@ -85,6 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
+
 
     print(user.uid);
     return StreamProvider<UserData>.value(
