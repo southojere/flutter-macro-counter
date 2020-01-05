@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:macro_counter_app/models/User.dart';
 
 class SettingsInput extends StatefulWidget {
   final double carbsTarget;
@@ -30,6 +32,8 @@ class _SettingsInputState extends State<SettingsInput> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
+
     return Form(
         key: _formKey,
         child: Column(
@@ -79,7 +83,7 @@ class _SettingsInputState extends State<SettingsInput> {
                     double carbs = double.parse(_carbsController.text);
                     double protein = double.parse(_proteinController.text);
                     double fat = double.parse(_fatController.text);
-                    widget.updateTargets(carbs, protein, fat);
+                    widget.updateTargets(carbs, protein, fat, user);
                   }
                 },
                 child: Text('Save'),

@@ -12,7 +12,10 @@ class Food {
       {@required this.name,
       @required this.carbs,
       @required this.protein,
-      @required this.fat}) {
-        this.id = Uuid().v1();
-      }
+      @required this.fat,
+      this.id}) {
+    if (id == null) {
+      this.id = Uuid().v1();
+    }
+  }
 }

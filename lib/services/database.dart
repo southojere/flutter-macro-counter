@@ -14,20 +14,12 @@ class DatabaseService {
   Future updateUserData(
       {double targetCarbs, double targetProtein, double targetFat}) async {
     return await userDataCollection.document(uid).setData({
-      'currentCarbs': 0,
-      'currentProtein': 0,
-      'currentFat': 0,
+      'currentCarbs': 0.0,
+      'currentProtein': 0.0,
+      'currentFat': 0.0,
       'targetCarbs': targetCarbs,
       'targetProtein': targetProtein,
       'targetFat': targetFat,
-      'foods': [
-        {
-          'name': 'Toast',
-          'carbs': 24,
-          'protein': 4,
-          'fat': 2,
-        }
-      ]
     });
   }
 
@@ -39,7 +31,9 @@ class DatabaseService {
           carbs: (food['carbs'] ?? 0).toDouble(),
           protein: (food['protein'] ?? 0).toDouble(),
           fat: (food['fat'] ?? 0).toDouble(),
-          name: food['name']);
+          id: food['id'],
+          name: food['name'],
+          );
     }).toList();
   }
 
@@ -53,7 +47,6 @@ class DatabaseService {
       currentCarbs: doc.data['currentCarbs'] ?? 0.0,
       currentProtein: doc.data['currentProtein'] ?? 0.0,
       currentFat: doc.data['currentFat'] ?? 0.0,
-      foods: _foodsToObject(doc.data['foods'] ?? []),
     );
   }
 
@@ -70,7 +63,7 @@ class DatabaseService {
           .then((QuerySnapshot snapshot) {
         return _foodsToObject(snapshot.documents);
       });
-      
+
       user.setFoods(usersFoods);
       return user;
     }).asStream();
@@ -83,7 +76,13 @@ class DatabaseService {
       "carbs": newFood.carbs,
       "protein": newFood.protein,
       "fat": newFood.fat,
+      "id": newFood.id
     });
+  }
+
+  // remove food from food list
+  void removeFoodFromList(Food foodToRemove) {
+      //  userDataCollection.document("${uid}").collection('foods').where('id','==',foodToRemove.id);
   }
 
   // update current carbs for this user
@@ -111,5 +110,21 @@ class DatabaseService {
     _addFat(fat);
   }
 
+  // resets the current macros
+  void resetMacros() {
+    userDataCollection.document("${uid}").updateData({
+      "currentProtein": 0.0,
+      "currentCarbs": 0.0,
+      "currentFat": 0.0,
+    });
+  }
 
+  // update users target macros
+  void updateTargets ({double carbs, double protein, double fat}) {
+    userDataCollection.document("${uid}").updateData({
+      "targetCarbs": carbs,
+      "targetProtein": protein,
+      "targetFat": fat,
+    });
+  }
 }

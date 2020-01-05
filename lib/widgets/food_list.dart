@@ -4,7 +4,7 @@ import 'package:macro_counter_app/models/Food.dart';
 import 'package:macro_counter_app/models/User.dart';
 import 'package:macro_counter_app/models/UserFirestoreData.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class FoodList extends StatelessWidget {
   final List<Food> food;
@@ -71,7 +71,7 @@ class FoodList extends StatelessWidget {
                           color: Colors.red,
                           icon: Icon(Icons.delete),
                           onPressed: () {
-                            this.deleteFood(foodItem);
+                            this.deleteFood(foodItem, user);
                           },
                         )
                       ],

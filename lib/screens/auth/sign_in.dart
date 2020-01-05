@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:macro_counter_app/screens/auth/register.dart';
 import 'package:macro_counter_app/services/auth.dart';
 import 'package:macro_counter_app/shared/constants.dart';
+import 'package:macro_counter_app/shared/loading.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
@@ -19,11 +20,15 @@ class _SignInState extends State<SignIn> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  bool loading = false;
+
   String error;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+
+    return loading ? Loading() : Scaffold(
         appBar: AppBar(
           actions: <Widget>[
             FlatButton.icon(
@@ -79,6 +84,7 @@ class _SignInState extends State<SignIn> {
                     textColor: Theme.of(context).textTheme.button.color,
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
+                        setState(() => loading = true);
                         print(_passwordController.text);
                         print(_emailController.text);
                         dynamic res = await _auth.signInWithEmailAndPassword(
@@ -86,8 +92,12 @@ class _SignInState extends State<SignIn> {
                         if (res == null) {
                           setState(() {
                             error = 'Could not signin with those credential';
+                            loading = false;
                           });
                         }
+                         setState(() {
+                          loading = false;
+                        });
                       }
                     },
                   ),

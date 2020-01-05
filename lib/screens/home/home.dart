@@ -17,7 +17,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  
   List<Macro> macros = [
     new Macro(label: 'Carbohydrates', value: 0, goalValue: 365),
     new Macro(label: 'Protein', value: 0, goalValue: 120),
@@ -27,32 +26,36 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Food> foodLibrary = [];
 
   void quickAddMacros(Food foodToAdd, User user) {
-    DatabaseService(uid: user.uid).addNewMacros(
-        carbs: foodToAdd.carbs, protein: foodToAdd.protein, fat: foodToAdd.fat);
     setState(() {
       macros[0].value += foodToAdd.carbs;
       macros[1].value += foodToAdd.protein;
       macros[2].value += foodToAdd.fat;
     });
+    DatabaseService(uid: user.uid).addNewMacros(
+        carbs: foodToAdd.carbs, protein: foodToAdd.protein, fat: foodToAdd.fat);
   }
 
   void addMacros(double carb, double protein, double fat, User user) {
-    DatabaseService(uid: user.uid)
-        .addNewMacros(carbs: carb, protein: protein, fat: fat);
     setState(() {
       macros[0].value += carb;
       macros[1].value += protein;
       macros[2].value += fat;
     });
+    DatabaseService(uid: user.uid)
+        .addNewMacros(carbs: carb, protein: protein, fat: fat);
   }
 
-  void deleteFood(Food foodToRemove) {
-    setState(() {
-      foodLibrary.removeWhere((food) {
-        if (food.id == foodToRemove.id) return true;
-        return false;
-      });
-    });
+  void deleteFood(Food foodToRemove, User user) {
+    print(foodToRemove.id);
+    // setState(() {
+    //   foodLibrary.removeWhere((food) {
+    //     if (food.id == foodToRemove.id) return true;
+    //     return false;
+    //   });
+    // });
+
+    DatabaseService(uid: user.uid)
+        .removeFoodFromList(foodToRemove);
   }
 
   void addFood(Food newFoodEntry, User user) {
@@ -60,7 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       foodLibrary.add(newFoodEntry);
     });
-    print(foodLibrary.length);
   }
 
   void _startAddMacros(BuildContext context) {
@@ -74,18 +76,19 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
-  void updateTargets(newCarbTarget, newProteinTarget, newFatTarget) {
+  void updateTargets(newCarbTarget, newProteinTarget, newFatTarget, User user) {
     setState(() {
       macros[0].goalValue = newCarbTarget;
       macros[1].goalValue = newProteinTarget;
       macros[2].goalValue = newFatTarget;
     });
+
+    DatabaseService(uid: user.uid).updateTargets(carbs:newCarbTarget, protein: newProteinTarget, fat: newFatTarget);
   }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-
 
     print(user.uid);
     return StreamProvider<UserData>.value(
