@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:macro_counter_app/models/Food.dart';
+import 'package:macro_counter_app/models/User.dart';
+import 'package:macro_counter_app/models/UserFirestoreData.dart';
+import 'package:provider/provider.dart';
+
 
 class FoodList extends StatelessWidget {
   final List<Food> food;
@@ -10,13 +14,15 @@ class FoodList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(food.length);
-    print('food.length');
+
+    final user = Provider.of<User>(context);
+    final userAppData = Provider.of<UserData>(context);
+
     return Flexible(
       child: new ListView.builder(
-        itemCount: food.length,
+        itemCount: userAppData != null ? userAppData.foods.length : 0,
         itemBuilder: (BuildContext ctx, int index) {
-          final Food foodItem = food[index];
+          final Food foodItem = userAppData.foods[index];
           return Card(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,7 +63,7 @@ class FoodList extends StatelessWidget {
                         IconButton(
                           icon: Icon(Icons.add),
                           onPressed: () {
-                            this.addFood(foodItem);
+                            this.addFood(foodItem,user);
                           },
                           color: Theme.of(context).primaryColor,
                         ),
@@ -65,7 +71,7 @@ class FoodList extends StatelessWidget {
                           color: Colors.red,
                           icon: Icon(Icons.delete),
                           onPressed: () {
-                            this.deleteFood(foodItem);
+                            this.deleteFood(foodItem, user);
                           },
                         )
                       ],

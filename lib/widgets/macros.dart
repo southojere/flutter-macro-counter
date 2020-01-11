@@ -1,6 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:macro_counter_app/models/Macro.dart';
+import 'package:macro_counter_app/services/database.dart';
+import 'package:macro_counter_app/shared/loading.dart';
 import 'package:macro_counter_app/widgets/macro_bar.dart';
+import 'package:macro_counter_app/models/UserFirestoreData.dart';
+import 'package:provider/provider.dart';
+import 'package:macro_counter_app/models/User.dart';
 
 class Macros extends StatelessWidget {
   final List<Macro> macros;
@@ -8,11 +14,47 @@ class Macros extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: this.macros.map((macro) {
-        return MacroBar(macro.label, macro.value, macro.goalValue);
-      }).toList(),
+    final userAppData = Provider.of<UserData>(context);
+    final user = Provider.of<User>(context);
+
+    if (userAppData == null) {
+      return Loading();
+    }
+
+    return Container(
+      alignment: Alignment.center,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          MacroBar(
+            'Carbs',
+            userAppData.currentCarbs,
+            userAppData.targetCarbs,
+          ),
+          MacroBar(
+            'Protein',
+            userAppData.currentProtein,
+            userAppData.targetProtein,
+          ),
+          MacroBar(
+            'Fat',
+            userAppData.currentFat,
+            userAppData.targetFat,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: RaisedButton(
+              color: Theme.of(context).primaryColor,
+              textColor: Theme.of(context).textTheme.button.color,
+              onPressed: () => DatabaseService(uid:user.uid).resetMacros(),
+              child: Text(
+                'Reset',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
