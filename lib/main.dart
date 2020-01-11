@@ -15,8 +15,11 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
+            brightness: Brightness.light,
+            scaffoldBackgroundColor: Colors.white,
             fontFamily: 'Roboto',
-            primarySwatch: Colors.orange,
+            primarySwatch: Colors.teal,
+            primaryColorDark: Colors.grey,
             textTheme: ThemeData.light().textTheme.copyWith(
                 title: TextStyle(
                   fontFamily: 'Roboto',
