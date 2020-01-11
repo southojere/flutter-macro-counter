@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:macro_counter_app/models/Macro.dart';
+import 'package:macro_counter_app/screens/settings/widgets/settings_inputs.dart';
 import 'package:macro_counter_app/services/auth.dart';
-import 'package:macro_counter_app/widgets/settings_inputs.dart';
 
 class SettingsScreen extends StatefulWidget {
 

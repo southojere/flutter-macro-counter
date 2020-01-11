@@ -1,13 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:macro_counter_app/models/Food.dart';
 import 'package:macro_counter_app/models/Macro.dart';
 import 'package:macro_counter_app/models/UserFirestoreData.dart';
+import 'package:macro_counter_app/screens/home/widgets/food_list.dart';
+import 'package:macro_counter_app/screens/home/widgets/macro_inputs.dart';
+import 'package:macro_counter_app/screens/home/widgets/macros/macros.dart';
 import 'package:macro_counter_app/screens/settings/settings_screen.dart';
 import 'package:macro_counter_app/services/database.dart';
-import 'package:macro_counter_app/widgets/food_list.dart';
-import 'package:macro_counter_app/widgets/macro_inputs.dart';
-import 'package:macro_counter_app/widgets/macros.dart';
 import 'package:provider/provider.dart';
 import 'package:macro_counter_app/models/User.dart';
 

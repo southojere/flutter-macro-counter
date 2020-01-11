@@ -5,7 +5,6 @@ import 'package:macro_counter_app/models/User.dart';
 import 'package:macro_counter_app/models/UserFirestoreData.dart';
 import 'package:provider/provider.dart';
 
-
 class FoodList extends StatelessWidget {
   final List<Food> food;
   final Function deleteFood;
@@ -14,7 +13,6 @@ class FoodList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final user = Provider.of<User>(context);
     final userAppData = Provider.of<UserData>(context);
 
@@ -28,16 +26,18 @@ class FoodList extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 // Title
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                  padding: EdgeInsets.all(10),
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    foodItem.name,
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.bold,
+                Flexible(
+                  child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    padding: EdgeInsets.all(10),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      foodItem.name,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
@@ -63,7 +63,7 @@ class FoodList extends StatelessWidget {
                         IconButton(
                           icon: Icon(Icons.add),
                           onPressed: () {
-                            this.addFood(foodItem,user);
+                            this.addFood(foodItem, user);
                           },
                           color: Theme.of(context).primaryColor,
                         ),

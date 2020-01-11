@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:macro_counter_app/models/Macro.dart';
+import 'package:macro_counter_app/screens/home/widgets/macros/macro_bar.dart';
 import 'package:macro_counter_app/services/database.dart';
 import 'package:macro_counter_app/shared/loading.dart';
-import 'package:macro_counter_app/widgets/macro_bar.dart';
 import 'package:macro_counter_app/models/UserFirestoreData.dart';
 import 'package:provider/provider.dart';
 import 'package:macro_counter_app/models/User.dart';
