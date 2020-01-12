@@ -1,7 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:macro_counter_app/screens/auth/login_in.dart';
-import 'package:macro_counter_app/screens/auth/register.dart';
-import 'package:macro_counter_app/screens/auth/sign_in.dart';
 import 'package:macro_counter_app/screens/auth/sign_up.dart';
 
 class Auth extends StatefulWidget {
