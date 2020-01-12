@@ -94,6 +94,7 @@ class _SignUpPageState extends State<SignUpPage> {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: TextFormField(
+          style: new TextStyle(color: Colors.white),
           decoration: InputDecoration(
             labelText: labelText,
             hintText: hintText,

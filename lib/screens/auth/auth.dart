@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:macro_counter_app/screens/auth/login_in.dart';
 import 'package:macro_counter_app/screens/auth/register.dart';
 import 'package:macro_counter_app/screens/auth/sign_in.dart';
 import 'package:macro_counter_app/screens/auth/sign_up.dart';
@@ -20,7 +21,7 @@ class _AuthState extends State<Auth> {
   Widget build(BuildContext context) {
     if (showSignIn) {
       return Container(
-        child: SignIn(toggleView),
+        child: LoginPage(toggleView),
       );
     } else {
       return Container(
