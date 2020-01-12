@@ -172,7 +172,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       buildFacebookButton(),
                       buildText(theme, 'or', 12.0),
                       buildText(theme, 'Sign up with your email address', 12.0),
-                      buildEmailPasswordInputField('email', 'your@email.com', false, theme),
+                      buildEmailPasswordInputField(
+                          'email', 'your@email.com', false, theme),
                       buildEmailPasswordInputField('password', '', true, theme),
                       SizedBox(
                         height: 18.0,

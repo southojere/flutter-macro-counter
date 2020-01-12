@@ -23,7 +23,6 @@ class _MyHomePageState extends State<MyHomePage> {
     new Macro(label: 'Fats', value: 0, goalValue: 60)
   ];
 
-  List<Food> foodLibrary = [];
 
   void quickAddMacros(Food foodToAdd, User user) {
     setState(() {
@@ -47,22 +46,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void deleteFood(Food foodToRemove, User user) {
     print(foodToRemove.id);
-    // setState(() {
-    //   foodLibrary.removeWhere((food) {
-    //     if (food.id == foodToRemove.id) return true;
-    //     return false;
-    //   });
-    // });
-
     DatabaseService(uid: user.uid)
         .removeFoodFromList(foodToRemove);
   }
 
   void addFood(Food newFoodEntry, User user) {
     DatabaseService(uid: user.uid).addFoodToList(newFoodEntry);
-    setState(() {
-      foodLibrary.add(newFoodEntry);
-    });
   }
 
   void _startAddMacros(BuildContext context) {
@@ -118,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Column(
           children: <Widget>[
             Macros(macros),
-            FoodList(foodLibrary, deleteFood, quickAddMacros)
+            FoodList( deleteFood, quickAddMacros)
           ],
         ),
         floatingActionButton: FloatingActionButton(

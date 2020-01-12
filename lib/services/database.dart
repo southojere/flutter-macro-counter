@@ -28,12 +28,12 @@ class DatabaseService {
     print('_foodsToObject');
     return foods.map((food) {
       return new Food(
-          carbs: (food['carbs'] ?? 0).toDouble(),
-          protein: (food['protein'] ?? 0).toDouble(),
-          fat: (food['fat'] ?? 0).toDouble(),
-          id: food['id'],
-          name: food['name'],
-          );
+        carbs: (food['carbs'] ?? 0).toDouble(),
+        protein: (food['protein'] ?? 0).toDouble(),
+        fat: (food['fat'] ?? 0).toDouble(),
+        id: food['id'],
+        name: food['name'],
+      );
     }).toList();
   }
 
@@ -81,8 +81,15 @@ class DatabaseService {
   }
 
   // remove food from food list
-  void removeFoodFromList(Food foodToRemove) {
-      //  userDataCollection.document("${uid}").collection('foods').where('id','==',foodToRemove.id);
+  void removeFoodFromList(Food foodToRemove) async {
+    QuerySnapshot foodDocsToRemove = await userDataCollection
+        .document("${uid}")
+        .collection('foods')
+        .where('id', isEqualTo: foodToRemove.id)
+        .getDocuments();
+    await Future.wait(foodDocsToRemove.documents.map((foodDoc) {
+      return foodDoc.reference.delete();
+    }));
   }
 
   // update current carbs for this user
@@ -120,7 +127,7 @@ class DatabaseService {
   }
 
   // update users target macros
-  void updateTargets ({double carbs, double protein, double fat}) {
+  void updateTargets({double carbs, double protein, double fat}) {
     userDataCollection.document("${uid}").updateData({
       "targetCarbs": carbs,
       "targetProtein": protein,
