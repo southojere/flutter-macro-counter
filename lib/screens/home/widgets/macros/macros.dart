@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:macro_counter_app/models/Macro.dart';
 import 'package:macro_counter_app/screens/home/widgets/macros/macro_bar.dart';
 import 'package:macro_counter_app/services/database.dart';
+import 'package:macro_counter_app/shared/dialog.dart';
 import 'package:macro_counter_app/shared/loading.dart';
 import 'package:macro_counter_app/models/UserFirestoreData.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +47,12 @@ class Macros extends StatelessWidget {
             child: RaisedButton(
               color: Theme.of(context).primaryColor,
               textColor: Theme.of(context).textTheme.button.color,
-              onPressed: () => DatabaseService(uid:user.uid).resetMacros(),
+              onPressed: () async {
+                final action = await Dialogs.yesAbortDialog(context, "Reset", "Do you want to reset your macros?");
+                if(action == DialogAction.yes) {
+                  DatabaseService(uid:user.uid).resetMacros();
+                }
+              },
               child: Text(
                 'Reset',
                 style: TextStyle(color: Colors.white),
