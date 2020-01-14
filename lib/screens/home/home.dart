@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:macro_counter_app/models/Food.dart';
 import 'package:macro_counter_app/models/Macro.dart';
@@ -7,6 +6,7 @@ import 'package:macro_counter_app/screens/home/widgets/food_list.dart';
 import 'package:macro_counter_app/screens/home/widgets/macro_inputs.dart';
 import 'package:macro_counter_app/screens/home/widgets/macros/macros.dart';
 import 'package:macro_counter_app/screens/settings/settings_screen.dart';
+import 'package:macro_counter_app/services/auth.dart';
 import 'package:macro_counter_app/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:macro_counter_app/models/User.dart';
@@ -23,6 +23,20 @@ class _MyHomePageState extends State<MyHomePage> {
     new Macro(label: 'Fats', value: 0, goalValue: 60)
   ];
 
+  dynamic userInfo;
+  List<Food> foodList;
+
+  @override
+  void initState() {
+    super.initState();
+    AuthService().getUser().then((user) {
+      DatabaseService(uid: user.uid).getUserData().then((userObj) {
+        setState(() {
+          foodList = userObj.foods;
+        });
+      });
+    });
+  }
 
   void quickAddMacros(Food foodToAdd, User user) {
     setState(() {
@@ -46,11 +60,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void deleteFood(Food foodToRemove, User user) {
     print(foodToRemove.id);
-    DatabaseService(uid: user.uid)
-        .removeFoodFromList(foodToRemove);
+    setState(() {
+      foodList.removeWhere((food) {
+        if (food.id == foodToRemove.id) {
+          return true;
+        }
+        return false;
+      });
+    });
+    DatabaseService(uid: user.uid).removeFoodFromList(foodToRemove);
   }
 
   void addFood(Food newFoodEntry, User user) {
+    setState(() {
+      foodList.add(newFoodEntry);
+    });
     DatabaseService(uid: user.uid).addFoodToList(newFoodEntry);
   }
 
@@ -72,14 +96,15 @@ class _MyHomePageState extends State<MyHomePage> {
       macros[2].goalValue = newFatTarget;
     });
 
-    DatabaseService(uid: user.uid).updateTargets(carbs:newCarbTarget, protein: newProteinTarget, fat: newFatTarget);
+    DatabaseService(uid: user.uid).updateTargets(
+        carbs: newCarbTarget, protein: newProteinTarget, fat: newFatTarget);
   }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
 
-    print(user.uid);
+    // TODO: remove stream and just use local
     return StreamProvider<UserData>.value(
       value: DatabaseService(uid: user.uid).userData,
       child: Scaffold(
@@ -107,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Column(
           children: <Widget>[
             Macros(macros),
-            FoodList( deleteFood, quickAddMacros)
+            FoodList(foodList, deleteFood, quickAddMacros)
           ],
         ),
         floatingActionButton: FloatingActionButton(

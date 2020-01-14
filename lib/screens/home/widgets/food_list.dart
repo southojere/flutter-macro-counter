@@ -3,12 +3,21 @@ import 'package:flutter/widgets.dart';
 import 'package:macro_counter_app/models/Food.dart';
 import 'package:macro_counter_app/models/User.dart';
 import 'package:macro_counter_app/models/UserFirestoreData.dart';
+import 'package:macro_counter_app/shared/loading.dart';
 import 'package:provider/provider.dart';
 
-class FoodList extends StatelessWidget {
+class FoodList extends StatefulWidget {
   final Function deleteFood;
   final Function addFood;
-  FoodList(this.deleteFood, this.addFood);
+  final List<Food> foodList;
+  FoodList(this.foodList,this.deleteFood, this.addFood);
+
+  @override
+  _FoodListState createState() => _FoodListState();
+}
+
+class _FoodListState extends State<FoodList> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +71,7 @@ class FoodList extends StatelessWidget {
                     IconButton(
                       icon: Icon(Icons.add),
                       onPressed: () {
-                        this.addFood(foodItem, user);
+                        this.widget.addFood(foodItem, user);
                       },
                       color: Theme.of(context).primaryColor,
                     ),
@@ -70,7 +79,7 @@ class FoodList extends StatelessWidget {
                       color: Colors.red,
                       icon: Icon(Icons.delete),
                       onPressed: () {
-                        this.deleteFood(foodItem, user);
+                        this.widget.deleteFood(foodItem, user);
                       },
                     )
                   ],
@@ -82,12 +91,16 @@ class FoodList extends StatelessWidget {
       );
     }
 
+    if(widget.foodList == null) {
+      return Loading();
+    }
+
     return Flexible(
       child: new ListView.builder(
-        itemCount: userAppData != null ? userAppData.foods.length : 0,
+        itemCount:  widget.foodList.length,
         itemBuilder: (BuildContext ctx, int index) {
-          final Food foodItem = userAppData.foods[index];
-          print(foodItem);
+          final Food foodItem = widget.foodList[index];
+      
           return buildFoodCard(foodItem, context, user);
         },
       ),

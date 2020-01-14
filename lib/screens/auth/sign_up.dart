@@ -123,12 +123,9 @@ class _SignUpPageState extends State<SignUpPage> {
           padding: const EdgeInsets.symmetric(vertical: 12.0),
           onPressed: () async {
             if (_formKey.currentState.validate()) {
-              print(_passwordController.text);
-              print(_emailController.text);
               dynamic res = await _auth.registerWithEmailAndPassword(
                   _emailController.text, _passwordController.text);
               if (res == null) {
-                print(res);
                 setState(() {
                   error = 'Error occured on signup';
                 });

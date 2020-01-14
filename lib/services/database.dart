@@ -25,7 +25,6 @@ class DatabaseService {
 
   // transform to food object
   List<Food> _foodsToObject(List foods) {
-    print('_foodsToObject');
     return foods.map((food) {
       return new Food(
         carbs: (food['carbs'] ?? 0).toDouble(),
@@ -39,7 +38,7 @@ class DatabaseService {
 
   // userdata from snapshot
   UserData _usersFromSnapshot(DocumentSnapshot doc) {
-    print('Transforming model...');
+    
     return UserData(
       targetCarbs: doc.data['targetCarbs'] ?? 0.0,
       targetProtein: doc.data['targetProtein'] ?? 0.0,
@@ -50,8 +49,25 @@ class DatabaseService {
     );
   }
 
+  Future<UserData> getUserData () {
+    return userDataCollection.document("${uid}").get().then((doc) {
+      var userDetails = _usersFromSnapshot(doc);
+      return userDetails;
+    }).then((UserData user) async {
+      List usersFoods = await userDataCollection
+          .document("${uid}")
+          .collection('foods')
+          .getDocuments()
+          .then((QuerySnapshot snapshot) {
+        return _foodsToObject(snapshot.documents);
+      });
+
+      user.setFoods(usersFoods);
+      return user;
+    });
+  }
+
   Stream<UserData> get userData {
-    print('getting user data...');
     return userDataCollection.document("${uid}").get().then((doc) {
       var userDetails = _usersFromSnapshot(doc);
       return userDetails;

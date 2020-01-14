@@ -15,6 +15,11 @@ class AuthService {
     return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
   }
 
+  Future<User> getUser() async {
+    FirebaseUser fireBaseUser = await _auth.currentUser();
+    return new User(fireBaseUser.uid);
+  }
+
   // sign anonymous
   Future signInAnon() async {
     print('Signing in anonymously...');
@@ -23,18 +28,18 @@ class AuthService {
       FirebaseUser user = res.user;
       return _userFromFirebaseUser(user);
     } catch (e) {
-      print(e.toString());
       return null;
     }
   }
 
   // signin with email and password
-  Future signInWithEmailAndPassword (String email, String password) async {
+  Future signInWithEmailAndPassword(String email, String password) async {
     try {
-      AuthResult res = await _auth.signInWithEmailAndPassword(password: password, email: email);
+      AuthResult res = await _auth.signInWithEmailAndPassword(
+          password: password, email: email);
       FirebaseUser user = res.user;
       return _userFromFirebaseUser(user);
-    }catch(e) {
+    } catch (e) {
       print(e.toString());
       return null;
     }
@@ -49,7 +54,8 @@ class AuthService {
       FirebaseUser user = res.user;
 
       // create new document for this user with uid
-      await DatabaseService(uid: user.uid).updateUserData(targetCarbs: 300,targetProtein: 130, targetFat: 100);
+      await DatabaseService(uid: user.uid)
+          .updateUserData(targetCarbs: 300, targetProtein: 130, targetFat: 100);
       print('done signup...');
       return _userFromFirebaseUser(user);
     } catch (e) {
@@ -57,7 +63,6 @@ class AuthService {
       return null;
     }
   }
-
 
   // sign out
   Future signOut() async {

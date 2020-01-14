@@ -41,7 +41,6 @@ class _MacroInputState extends State<MacroInputs> {
   }
 
   _onSaveFood(User currentUser) {
-    print('on save');
     String name = _nameController.text;
     if (name == '') {
       return;
