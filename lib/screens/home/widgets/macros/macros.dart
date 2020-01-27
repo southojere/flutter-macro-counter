@@ -11,17 +11,16 @@ import 'package:macro_counter_app/models/User.dart';
 
 class Macros extends StatelessWidget {
   final List<Macro> macros;
-  Macros(this.macros);
+  final Function resetMacros;
+  Macros(this.macros, this.resetMacros);
 
   @override
   Widget build(BuildContext context) {
-    final userAppData = Provider.of<UserData>(context);
     final user = Provider.of<User>(context);
 
-    if (userAppData == null) {
-      return Loading();
-    }
-
+    Macro carbs = macros[0];
+    Macro protein = macros[1];
+    Macro fat = macros[2];
     return Container(
       alignment: Alignment.center,
       child: Column(
@@ -29,18 +28,18 @@ class Macros extends StatelessWidget {
         children: [
           MacroBar(
             'Carbs',
-            userAppData.currentCarbs,
-            userAppData.targetCarbs,
+            carbs.value,
+            carbs.goalValue,
           ),
           MacroBar(
             'Protein',
-            userAppData.currentProtein,
-            userAppData.targetProtein,
+            protein.value,
+            protein.goalValue,
           ),
           MacroBar(
             'Fat',
-            userAppData.currentFat,
-            userAppData.targetFat,
+            fat.value,
+            fat.goalValue,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -48,9 +47,10 @@ class Macros extends StatelessWidget {
               color: Theme.of(context).primaryColor,
               textColor: Theme.of(context).textTheme.button.color,
               onPressed: () async {
-                final action = await Dialogs.yesAbortDialog(context, "Reset", "Do you want to reset your macros?");
-                if(action == DialogAction.yes) {
-                  DatabaseService(uid:user.uid).resetMacros();
+                final action = await Dialogs.yesAbortDialog(
+                    context, "Reset", "Do you want to reset your macros?");
+                if (action == DialogAction.yes) {
+                  resetMacros(user);
                 }
               },
               child: Text(

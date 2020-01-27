@@ -28,67 +28,66 @@ class _SettingsInputState extends State<SettingsInput> {
   final _proteinController = TextEditingController();
   final _fatController = TextEditingController();
 
-
-
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
+
+    Row buildInputRow(
+        double value, String inputLabel, TextEditingController controller) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text('${value}'),
+          SizedBox(
+            height: 20,
+          ),
+          SizedBox(
+            child: TextFormField(
+              controller: controller,
+              decoration: InputDecoration(
+                labelText: inputLabel,
+              ),
+              keyboardType: TextInputType.number,
+              validator: (String value) {
+                if (value == '') return 'Field is required';
+                return null;
+              },
+            ),
+          width: MediaQuery.of(context).size.width * 0.8,),
+        ],
+      );
+    }
+
+    Padding buildSaveBtn(BuildContext context, User user) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: RaisedButton(
+          color: Theme.of(context).primaryColor,
+          textColor: Theme.of(context).textTheme.button.color,
+          onPressed: () {
+            if (_formKey.currentState.validate()) {
+              // save settings
+              double carbs = double.parse(_carbsController.text);
+              double protein = double.parse(_proteinController.text);
+              double fat = double.parse(_fatController.text);
+              widget.updateTargets(carbs, protein, fat, user);
+            }
+          },
+          child: Text('Save'),
+        ),
+      );
+    }
 
     return Form(
         key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            TextFormField(
-              controller: _carbsController,
-              decoration: InputDecoration(
-                  labelText: 'Target Carbs',
-                  hintText: 'Current protein target: ${widget.carbsTarget}'),
-              keyboardType: TextInputType.number,
-              validator: (String value) {
-                if (value == '') return 'Field is required';
-                return null;
-              },
-            ),
-            TextFormField(
-              controller: _proteinController,
-              decoration: InputDecoration(
-                  labelText: 'Target Protein',
-                  hintText: 'Current protein target: ${widget.proteinTarget}'),
-              keyboardType: TextInputType.number,
-              validator: (String value) {
-                if (value == '') return 'Field is required';
-                return null;
-              },
-            ),
-            TextFormField(
-              controller: _fatController,
-              decoration: InputDecoration(
-                  labelText: 'Target Fat',
-                  hintText: 'Current fat target: ${widget.fatTarget}'),
-              keyboardType: TextInputType.number,
-              validator: (String value) {
-                if (value == '') return 'Field is required';
-                return null;
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: RaisedButton(
-                color: Theme.of(context).primaryColor,
-                textColor: Theme.of(context).textTheme.button.color,
-                onPressed: () {
-                  if (_formKey.currentState.validate()) {
-                    // save settings
-                    double carbs = double.parse(_carbsController.text);
-                    double protein = double.parse(_proteinController.text);
-                    double fat = double.parse(_fatController.text);
-                    widget.updateTargets(carbs, protein, fat, user);
-                  }
-                },
-                child: Text('Save'),
-              ),
-            ),
+            buildInputRow(widget.carbsTarget, "Target Carbs", _carbsController),
+            buildInputRow(
+                widget.proteinTarget, "Target Protein", _proteinController),
+            buildInputRow(widget.fatTarget, "Target Fat", _fatController),
+            buildSaveBtn(context, user),
           ],
         ));
   }

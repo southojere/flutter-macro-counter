@@ -1,12 +1,10 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:macro_counter_app/models/Macro.dart';
 import 'package:macro_counter_app/screens/settings/widgets/settings_inputs.dart';
 import 'package:macro_counter_app/services/auth.dart';
+import 'package:macro_counter_app/shared/dialog.dart';
 
 class SettingsScreen extends StatefulWidget {
-
   final List<Macro> macros;
   final Function updateTargets;
   SettingsScreen({this.macros, this.updateTargets});
@@ -18,14 +16,13 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-
-  final AuthService _auth =  AuthService();
+  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
-    
     double carbsTarget = widget.macros != null ? widget.macros[0].goalValue : 0;
-    double proteinTarget = widget.macros != null ? widget.macros[1].goalValue: 0;
+    double proteinTarget =
+        widget.macros != null ? widget.macros[1].goalValue : 0;
     double fatTarget = widget.macros != null ? widget.macros[2].goalValue : 0;
 
     return Scaffold(
@@ -34,8 +31,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
           IconButton(
             icon: Icon(Icons.exit_to_app),
             onPressed: () async {
-              await _auth.signOut();
-              Navigator.of(context).pop();
+              final action = await Dialogs.yesAbortDialog(
+                  context, "Logout", "Are you sure you want to logout?");
+              if (action == DialogAction.yes) {
+                await _auth.signOut();
+                Navigator.of(context).pop();
+              } 
             },
           )
         ],
@@ -45,11 +46,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: <Widget>[
-            SettingsInput(updateTargets: widget.updateTargets,carbsTarget: carbsTarget, proteinTarget: proteinTarget, fatTarget: fatTarget),
-            
+            SettingsInput(
+                updateTargets: widget.updateTargets,
+                carbsTarget: carbsTarget,
+                proteinTarget: proteinTarget,
+                fatTarget: fatTarget),
           ],
         ),
-      ),// This trailing comma makes auto-formatting nicer for build methods.
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

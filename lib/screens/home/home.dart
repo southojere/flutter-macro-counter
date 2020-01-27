@@ -33,6 +33,11 @@ class _MyHomePageState extends State<MyHomePage> {
       DatabaseService(uid: user.uid).getUserData().then((userObj) {
         setState(() {
           foodList = userObj.foods;
+          macros = [
+            new Macro(label:'carbs',value: userObj.currentCarbs, goalValue: userObj.targetCarbs),
+            new Macro(label:'protein',value: userObj.currentCarbs, goalValue: userObj.targetCarbs),
+            new Macro(label:'fat',value: userObj.currentCarbs, goalValue: userObj.targetCarbs),
+          ];
         });
       });
     });
@@ -56,6 +61,15 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     DatabaseService(uid: user.uid)
         .addNewMacros(carbs: carb, protein: protein, fat: fat);
+  }
+
+  void resetMacros(User user) {
+    DatabaseService(uid:user.uid).resetMacros();
+    setState(() {
+      macros[0].value = 0;
+      macros[1].value = 0;
+      macros[2].value = 0;
+    });
   }
 
   void deleteFood(Food foodToRemove, User user) {
@@ -104,10 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
 
-    // TODO: remove stream and just use local
-    return StreamProvider<UserData>.value(
-      value: DatabaseService(uid: user.uid).userData,
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           actions: <Widget>[
             IconButton(
@@ -131,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Column(
           children: <Widget>[
-            Macros(macros),
+            Macros(macros, resetMacros),
             FoodList(foodList, deleteFood, quickAddMacros)
           ],
         ),
@@ -139,8 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
           onPressed: () => _startAddMacros(context),
           tooltip: 'Increment',
           child: Icon(Icons.add),
-        ), // This trailing comma makes auto-formatting nicer for build methods.
-      ),
+        )
     );
   }
 }

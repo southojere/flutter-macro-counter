@@ -22,7 +22,6 @@ class _FoodListState extends State<FoodList> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-    final userAppData = Provider.of<UserData>(context);
 
     Flexible buildFoodTitle(Food foodItem, BuildContext context) {
       return Flexible(

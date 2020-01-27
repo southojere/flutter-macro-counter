@@ -1,4 +1,3 @@
-import 'package:macro_counter_app/models/Food.dart';
 
 class UserData {
   final dynamic currentCarbs;
