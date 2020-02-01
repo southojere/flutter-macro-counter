@@ -12,18 +12,26 @@ class MacroBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double percentage = this.value / this.goalValue;
+    double remaining = goalValue - value;
+    String displayValue = '${remaining.toString()} left';
+    if (remaining < 0) displayValue = 'Done!';
+
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(this.label),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[Text(this.label), Text("${displayValue}")],
+              ),
+            ),
             new LinearPercentIndicator(
-              lineHeight: 17.0,
+              lineHeight: 7.0,
               percent: percentage < 1.0 ? percentage : 1,
               backgroundColor: Colors.grey,
-              center:
-                  Text(this.value.toString(), style: TextStyle(fontSize: 14)),
               progressColor: Theme.of(context).primaryColor,
             ),
           ]),
