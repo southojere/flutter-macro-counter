@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:macro_counter_app/services/auth.dart';
+import 'package:macro_counter_app/shared/loading.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class LoginPage extends StatefulWidget {
@@ -124,15 +125,13 @@ class _LoginPageState extends State<LoginPage> {
                 loading = false;
               });
             }
-            setState(() {
-              loading = false;
-            });
+            setState(() => loading = false);
           }
         },
-        child: Text(
+        child: !loading ? Text(
           'Login',
           style: TextStyle(color: Colors.white),
-        ),
+        ) : Loading(color: Colors.white, size: 20,),
       ),
     );
   }
