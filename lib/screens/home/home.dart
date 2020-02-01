@@ -25,6 +25,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   dynamic userInfo;
   List<Food> foodList;
+  int currentPage = 0;
 
   @override
   void initState() {
@@ -34,16 +35,25 @@ class _MyHomePageState extends State<MyHomePage> {
         setState(() {
           foodList = userObj.foods;
           macros = [
-            new Macro(label:'carbs',value: userObj.currentCarbs, goalValue: userObj.targetCarbs),
-            new Macro(label:'protein',value: userObj.currentCarbs, goalValue: userObj.targetCarbs),
-            new Macro(label:'fat',value: userObj.currentCarbs, goalValue: userObj.targetCarbs),
+            new Macro(
+                label: 'carbs',
+                value: userObj.currentCarbs,
+                goalValue: userObj.targetCarbs),
+            new Macro(
+                label: 'protein',
+                value: userObj.currentCarbs,
+                goalValue: userObj.targetCarbs),
+            new Macro(
+                label: 'fat',
+                value: userObj.currentCarbs,
+                goalValue: userObj.targetCarbs),
           ];
         });
       });
     });
   }
 
-  void quickAddMacros(Food foodToAdd, User user) {
+  void addMacros(Food foodToAdd, User user) {
     setState(() {
       macros[0].value += foodToAdd.carbs;
       macros[1].value += foodToAdd.protein;
@@ -53,23 +63,13 @@ class _MyHomePageState extends State<MyHomePage> {
         carbs: foodToAdd.carbs, protein: foodToAdd.protein, fat: foodToAdd.fat);
   }
 
-  void addMacros(double carb, double protein, double fat, User user) {
-    setState(() {
-      macros[0].value += carb;
-      macros[1].value += protein;
-      macros[2].value += fat;
-    });
-    DatabaseService(uid: user.uid)
-        .addNewMacros(carbs: carb, protein: protein, fat: fat);
-  }
-
   void resetMacros(User user) {
-    DatabaseService(uid:user.uid).resetMacros();
     setState(() {
       macros[0].value = 0;
       macros[1].value = 0;
       macros[2].value = 0;
     });
+    DatabaseService(uid: user.uid).resetMacros();
   }
 
   void deleteFood(Food foodToRemove, User user) {
@@ -119,38 +119,45 @@ class _MyHomePageState extends State<MyHomePage> {
     final user = Provider.of<User>(context);
 
     return Scaffold(
-        appBar: AppBar(
-          actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () => _startAddMacros(context)),
-            IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SettingsScreen(
-                            macros: macros,
-                            updateTargets: updateTargets,
-                          )),
-                );
-              },
-            )
-          ],
-          title: Text('Dashboard'),
-        ),
-        body: Column(
-          children: <Widget>[
-            Macros(macros, resetMacros),
-            FoodList(foodList, deleteFood, quickAddMacros)
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => _startAddMacros(context),
-          tooltip: 'Increment',
-          child: Icon(Icons.add),
-        )
+      // TODO - Finish off this, need to refactor this page
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentPage,
+        onTap: (int index) {
+          setState(() => currentPage = index);
+        },
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
+          BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('Me')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.insert_chart), title: Text('Stats')),
+        ],
+      ),
+      appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.add), onPressed: () => _startAddMacros(context)),
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SettingsScreen(
+                          macros: macros,
+                          updateTargets: updateTargets,
+                        )),
+              );
+            },
+          )
+        ],
+        title: Text('Dashboard'),
+      ),
+      body: Column(
+        children: <Widget>[
+          Macros(macros, resetMacros),
+          FoodList(foodList, deleteFood, addMacros)
+        ],
+      ),
     );
   }
 }

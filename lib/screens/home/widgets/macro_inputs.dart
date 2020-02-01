@@ -33,7 +33,7 @@ class _MacroInputState extends State<MacroInputs> {
     double fat =
         double.parse(_fatController.text == '' ? '0.0' : _fatController.text);
 
-    widget.addMacros(carbs, protein, fat, user);
+    widget.addMacros(new Food(name: "", carbs: carbs, protein: protein, fat: fat), user);
 
     _carbsController.clear();
     _proteinController.clear();
