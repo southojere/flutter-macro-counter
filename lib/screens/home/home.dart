@@ -42,11 +42,11 @@ class _MyHomePageState extends State<MyHomePage> {
             new Macro(
                 label: 'protein',
                 value: userObj.currentCarbs,
-                goalValue: userObj.targetCarbs),
+                goalValue: userObj.targetProtein),
             new Macro(
                 label: 'fat',
                 value: userObj.currentCarbs,
-                goalValue: userObj.targetCarbs),
+                goalValue: userObj.targetFat),
           ];
         });
       });
