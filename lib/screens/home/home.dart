@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:macro_counter_app/models/Food.dart';
 import 'package:macro_counter_app/models/Macro.dart';
-import 'package:macro_counter_app/models/UserFirestoreData.dart';
 import 'package:macro_counter_app/screens/home/widgets/food_list.dart';
 import 'package:macro_counter_app/screens/home/widgets/macro_inputs.dart';
 import 'package:macro_counter_app/screens/home/widgets/macros/macros.dart';
@@ -121,15 +120,19 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       // TODO - Finish off this, need to refactor this page
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentPage,
-        onTap: (int index) {
-          setState(() => currentPage = index);
-        },
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
-          BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('Me')),
           BottomNavigationBarItem(
-              icon: Icon(Icons.insert_chart), title: Text('Stats')),
+            title: Text('Home'),
+            icon: Icon(Icons.home),
+          ),
+          BottomNavigationBarItem(
+            title: Text('Settings'),
+            icon: Icon(Icons.person),
+          ),
+          BottomNavigationBarItem(
+            title: Text('Analytics'),
+            icon: Icon(Icons.insert_chart),
+          ),
         ],
       ),
       appBar: AppBar(
