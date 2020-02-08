@@ -24,7 +24,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   dynamic userInfo;
   List<Food> foodList;
-  int currentPage = 0;
 
   @override
   void initState() {
@@ -115,32 +114,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
-
     return Scaffold(
-      // TODO - Finish off this, need to refactor this page
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            title: Text('Home'),
-            icon: Icon(Icons.home),
-          ),
-          BottomNavigationBarItem(
-            title: Text('Settings'),
-            icon: Icon(Icons.person),
-          ),
-          BottomNavigationBarItem(
-            title: Text('Analytics'),
-            icon: Icon(Icons.insert_chart),
-          ),
-        ],
-      ),
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.add), onPressed: () => _startAddMacros(context)),
           IconButton(
-            icon: Icon(Icons.settings),
+            icon: Icon(Icons.person),
             onPressed: () {
               Navigator.push(
                 context,
