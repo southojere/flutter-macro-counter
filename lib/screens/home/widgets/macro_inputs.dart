@@ -33,7 +33,8 @@ class _MacroInputState extends State<MacroInputs> {
     double fat =
         double.parse(_fatController.text == '' ? '0.0' : _fatController.text);
 
-    widget.addMacros(new Food(name: "", carbs: carbs, protein: protein, fat: fat), user);
+    widget.addMacros(
+        new Food(name: "", carbs: carbs, protein: protein, fat: fat), user);
 
     _carbsController.clear();
     _proteinController.clear();
@@ -57,54 +58,82 @@ class _MacroInputState extends State<MacroInputs> {
     widget.addFood(newFood, currentUser);
   }
 
+  Padding buildTextInput(
+      TextEditingController controller, String label, TextInputType inputType) {
+    return Padding(
+      padding: const EdgeInsets.only(top:8.0, left: 8.0,right:8.0),
+      child: TextField(
+        controller: controller,
+        style: new TextStyle(fontSize: 14, color: Colors.black),
+        decoration: InputDecoration(
+            labelText: label,
+            focusedBorder: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: Theme.of(context).primaryColor, width: 2.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Theme.of(context).primaryColorDark, width: 1.0))),
+        keyboardType: inputType,
+      ),
+    );
+  }
+
+  RaisedButton buildButton(
+      String label, Function onPress, BuildContext context) {
+    return RaisedButton(
+      child: Text(label),
+      color: Theme.of(context).primaryColor,
+      textColor: Theme.of(context).textTheme.button.color,
+      onPressed: onPress,
+    );
+  }
+
+  Column buildSheetItems(User user, BuildContext context) {
+    return Column(
+      children: <Widget>[
+        SizedBox(
+          height: 10,
+        ),
+        buildTextInput(_nameController, 'Name (optional)', TextInputType.text),
+        Row(
+          children: <Widget>[
+            Flexible(
+                child: buildTextInput(
+                    _carbsController, 'Carbs', TextInputType.number)),
+            Flexible(
+              child: buildTextInput(
+                  _proteinController, 'Protein', TextInputType.number),
+            ),
+            Flexible(
+                child: buildTextInput(
+                    _fatController, 'Fat', TextInputType.number)),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              buildButton('Save', () => _onSaveFood(user), context),
+              SizedBox(
+                width: 10,
+              ),
+              buildButton('Quick Add', () => _onSubmit(user), context),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
     // final userAppData = Provider.of<UserData>(context);
 
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
-        children: <Widget>[
-          TextField(
-            controller: _nameController,
-            decoration: InputDecoration(labelText: 'Name (optional)'),
-            keyboardType: TextInputType.text,
-          ),
-          TextField(
-            controller: _carbsController,
-            decoration: InputDecoration(labelText: 'Carbs'),
-            keyboardType: TextInputType.number,
-          ),
-          TextField(
-            controller: _proteinController,
-            decoration: InputDecoration(labelText: 'Protein'),
-            keyboardType: TextInputType.number,
-          ),
-          TextField(
-            controller: _fatController,
-            decoration: InputDecoration(labelText: 'Fat'),
-            keyboardType: TextInputType.number,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.save),
-                tooltip: 'Save this entry to your library',
-                onPressed: () => _onSaveFood(user),
-                color: Theme.of(context).primaryColor,
-              ),
-              RaisedButton(
-                child: Text('Add Macros'),
-                color: Theme.of(context).primaryColor,
-                textColor: Theme.of(context).textTheme.button.color,
-                onPressed: () => _onSubmit(user),
-              ),
-            ],
-          )
-        ],
-      ),
+    return Container(
+      child: buildSheetItems(user, context),
     );
   }
 }

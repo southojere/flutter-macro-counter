@@ -93,6 +93,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void _startAddMacros(BuildContext context) {
     showModalBottomSheet(
         context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
+        ),
         builder: (ctx) {
           return MacroInputs(
             addMacros: addMacros,

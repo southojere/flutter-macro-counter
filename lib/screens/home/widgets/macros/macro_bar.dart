@@ -25,7 +25,9 @@ class MacroBar extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[Text(this.label), Text("${displayValue}")],
+                children: <Widget>[Text(this.label), Text("${displayValue}", style: TextStyle(
+                  fontWeight: FontWeight.bold
+                ),)],
               ),
             ),
             new LinearPercentIndicator(
