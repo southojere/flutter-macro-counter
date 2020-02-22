@@ -39,11 +39,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 goalValue: userObj.targetCarbs),
             new Macro(
                 label: 'protein',
-                value: userObj.currentCarbs,
+                value: userObj.currentProtein,
                 goalValue: userObj.targetProtein),
             new Macro(
                 label: 'fat',
-                value: userObj.currentCarbs,
+                value: userObj.currentFat,
                 goalValue: userObj.targetFat),
           ];
         });
@@ -94,7 +94,8 @@ class _MyHomePageState extends State<MyHomePage> {
     showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
         ),
         builder: (ctx) {
           return MacroInputs(
