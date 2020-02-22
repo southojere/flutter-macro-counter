@@ -7,8 +7,8 @@ import 'package:macro_counter_app/screens/home/widgets/macros/macros.dart';
 import 'package:macro_counter_app/screens/settings/settings_screen.dart';
 import 'package:macro_counter_app/services/auth.dart';
 import 'package:macro_counter_app/services/database.dart';
-import 'package:provider/provider.dart';
 import 'package:macro_counter_app/models/User.dart';
+import 'package:macro_counter_app/shared/custom_toast.dart/index.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -81,6 +81,8 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     });
     DatabaseService(uid: user.uid).removeFoodFromList(foodToRemove);
+    ToastUtils.showCustomToast(context, "Deleted",
+        Icon(Icons.delete, color: Colors.white), ToastType.error);
   }
 
   void addFood(Food newFoodEntry, User user) {

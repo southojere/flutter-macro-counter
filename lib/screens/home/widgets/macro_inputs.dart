@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:macro_counter_app/models/Food.dart';
+import 'package:macro_counter_app/shared/custom_toast.dart/index.dart';
 import 'package:provider/provider.dart';
 import 'package:macro_counter_app/models/User.dart';
-import 'package:macro_counter_app/models/UserFirestoreData.dart';
 
 class MacroInputs extends StatefulWidget {
   final Function addMacros;
@@ -25,7 +25,7 @@ class _MacroInputState extends State<MacroInputs> {
   final _proteinController = TextEditingController();
   final _fatController = TextEditingController();
 
-  _onSubmit(User user) {
+  _onSubmit(User user, BuildContext context) {
     double carbs = double.parse(
         _carbsController.text == '' ? '0.0' : _carbsController.text);
     double protein = double.parse(
@@ -56,12 +56,16 @@ class _MacroInputState extends State<MacroInputs> {
     Food newFood =
         new Food(name: name, carbs: carbs, protein: protein, fat: fat);
     widget.addFood(newFood, currentUser);
+
+    // display toast
+    ToastUtils.showCustomToast(context, "Added Food",
+        Icon(Icons.done_all, color: Colors.white), ToastType.complete);
   }
 
   Padding buildTextInput(
       TextEditingController controller, String label, TextInputType inputType) {
     return Padding(
-      padding: const EdgeInsets.only(top:8.0, left: 8.0,right:8.0),
+      padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
       child: TextField(
         controller: controller,
         style: new TextStyle(fontSize: 14, color: Colors.black),
@@ -119,7 +123,7 @@ class _MacroInputState extends State<MacroInputs> {
               SizedBox(
                 width: 10,
               ),
-              buildButton('Quick Add', () => _onSubmit(user), context),
+              buildButton('Quick Add', () => _onSubmit(user, context), context),
             ],
           ),
         )
