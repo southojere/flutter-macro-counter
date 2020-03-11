@@ -125,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                 loading = false;
               });
             }
-            setState(() => loading = false);
+            // setState(() => loading = false);
           }
         },
         child: !loading ? Text(
