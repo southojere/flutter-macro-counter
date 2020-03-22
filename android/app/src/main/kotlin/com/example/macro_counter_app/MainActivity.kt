@@ -1,4 +1,4 @@
-package com.example.macro_counter_app
+package com.southon.macro_counter_app
 
 import android.os.Bundle
 

@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       value: AuthService().user,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'MacroM',
         theme: ThemeData(
             brightness: Brightness.light,
             scaffoldBackgroundColor: Colors.white,
