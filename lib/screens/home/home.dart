@@ -4,7 +4,7 @@ import 'package:macro_counter_app/models/Macro.dart';
 import 'package:macro_counter_app/screens/home/widgets/food_list.dart';
 import 'package:macro_counter_app/screens/home/widgets/macro_inputs.dart';
 import 'package:macro_counter_app/screens/home/widgets/macros/macros.dart';
-import 'package:macro_counter_app/screens/settings/settings_screen.dart';
+import 'package:macro_counter_app/screens/settings/index.dart';
 import 'package:macro_counter_app/services/auth.dart';
 import 'package:macro_counter_app/services/database.dart';
 import 'package:macro_counter_app/models/User.dart';

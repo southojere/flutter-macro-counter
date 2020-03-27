@@ -7,7 +7,7 @@ class AuthService {
 
   // create user object based on firebase object
   User _userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? new User(user.uid) : null;
+    return user != null ? new User(user.uid, user.email) : null;
   }
 
   // auth change user steam
@@ -17,7 +17,7 @@ class AuthService {
 
   Future<User> getUser() async {
     FirebaseUser fireBaseUser = await _auth.currentUser();
-    return new User(fireBaseUser.uid);
+    return new User(fireBaseUser.uid, fireBaseUser.email);
   }
 
   // sign anonymous

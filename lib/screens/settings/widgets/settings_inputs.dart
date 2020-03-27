@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:macro_counter_app/shared/custom_toast.dart/index.dart';
 import 'package:provider/provider.dart';
 import 'package:macro_counter_app/models/User.dart';
 
@@ -22,38 +23,45 @@ class SettingsInput extends StatefulWidget {
 }
 
 class _SettingsInputState extends State<SettingsInput> {
-  final _formKey = GlobalKey<FormState>();
+  double carbs = 0;
+  double protein = 0;
+  double fat = 0;
 
-  final _carbsController = TextEditingController();
-  final _proteinController = TextEditingController();
-  final _fatController = TextEditingController();
+  void handleTargetSave(User user) {
+  widget.updateTargets(carbs.roundToDouble(), protein.roundToDouble(),
+                fat.roundToDouble(), user);
+    ToastUtils.showCustomToast(context, "Saved Targets",
+        Icon(Icons.done_all, color: Colors.white), ToastType.complete);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      carbs = widget.carbsTarget;
+      protein = widget.proteinTarget;
+      fat = widget.fatTarget;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
 
-    Row buildInputRow(
-        double value, String inputLabel, TextEditingController controller) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    Column buildInputRow(double value, String inputLabel, Function setValue) {
+      int formattedValue = value.toInt();
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('${value}'),
-          SizedBox(
-            height: 20,
-          ),
-          SizedBox(
-            child: TextFormField(
-              controller: controller,
-              decoration: InputDecoration(
-                labelText: inputLabel,
-              ),
-              keyboardType: TextInputType.number,
-              validator: (String value) {
-                if (value == '') return 'Field is required';
-                return null;
-              },
-            ),
-          width: MediaQuery.of(context).size.width * 0.8,),
+          Text('${inputLabel} ${formattedValue}'),
+          Slider(
+            value: value,
+            onChanged: (value) {
+              setValue(value);
+            },
+            min: 0,
+            max: 500,
+          )
         ],
       );
     }
@@ -64,31 +72,26 @@ class _SettingsInputState extends State<SettingsInput> {
         child: RaisedButton(
           color: Theme.of(context).primaryColor,
           textColor: Theme.of(context).textTheme.button.color,
-          onPressed: () {
-            if (_formKey.currentState.validate()) {
-              // save settings
-              double carbs = double.parse(_carbsController.text);
-              double protein = double.parse(_proteinController.text);
-              double fat = double.parse(_fatController.text);
-              widget.updateTargets(carbs, protein, fat, user);
-            }
-          },
+          onPressed: () => handleTargetSave(user),
           child: Text('Save'),
         ),
       );
     }
 
-    return Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            buildInputRow(widget.carbsTarget, "Target Carbs", _carbsController),
-            buildInputRow(
-                widget.proteinTarget, "Target Protein", _proteinController),
-            buildInputRow(widget.fatTarget, "Target Fat", _fatController),
-            buildSaveBtn(context, user),
-          ],
-        ));
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        buildInputRow(carbs, "Target Carbs", (value) {
+          setState(() => carbs = value);
+        }),
+        buildInputRow(protein, "Target Protein", (value) {
+          setState(() => protein = value);
+        }),
+        buildInputRow(fat, "Target Fat", (value) {
+          setState(() => fat = value);
+        }),
+        buildSaveBtn(context, user),
+      ],
+    );
   }
 }
