@@ -60,7 +60,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ],
             ),
-             ExpansionTile(
+            ExpansionTile(
               trailing: Icon(Icons.person),
               title: Text('Account'),
               children: <Widget>[

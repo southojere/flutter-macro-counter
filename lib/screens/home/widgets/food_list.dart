@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:macro_counter_app/models/Food.dart';
 import 'package:macro_counter_app/models/User.dart';
 import 'package:macro_counter_app/models/UserFirestoreData.dart';
+import 'package:macro_counter_app/shared/custom_toast.dart/index.dart';
 import 'package:macro_counter_app/shared/dialog.dart';
 import 'package:macro_counter_app/shared/loading.dart';
 import 'package:provider/provider.dart';
@@ -140,6 +141,11 @@ class _FoodListState extends State<FoodList> {
                   icon: Icon(Icons.add),
                   onPressed: () {
                     this.widget.addFood(foodItem, user);
+                    ToastUtils.showCustomToast(
+                        context,
+                        "Added ${foodItem.name}",
+                        Icon(Icons.done_all, color: Colors.white),
+                        ToastType.complete);
                   },
                   color: Theme.of(context).primaryColor,
                 ),

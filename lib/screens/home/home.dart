@@ -59,6 +59,9 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     DatabaseService(uid: user.uid).addNewMacros(
         carbs: foodToAdd.carbs, protein: foodToAdd.protein, fat: foodToAdd.fat);
+
+    ToastUtils.showCustomToast(context, "Added",
+        Icon(Icons.done, color: Colors.white), ToastType.complete);
   }
 
   void resetMacros(User user) {

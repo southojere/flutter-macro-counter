@@ -96,9 +96,6 @@ class _MacroInputState extends State<MacroInputs> {
   Column buildSheetItems(User user, BuildContext context) {
     return Column(
       children: <Widget>[
-        SizedBox(
-          height: 10,
-        ),
         buildTextInput(_nameController, 'Name (optional)', TextInputType.text),
         Row(
           children: <Widget>[
@@ -115,7 +112,7 @@ class _MacroInputState extends State<MacroInputs> {
           ],
         ),
         Padding(
-          padding: const EdgeInsets.only(right: 8),
+          padding: const EdgeInsets.only(right: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
@@ -137,7 +134,10 @@ class _MacroInputState extends State<MacroInputs> {
     // final userAppData = Provider.of<UserData>(context);
 
     return Container(
-      child: buildSheetItems(user, context),
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: buildSheetItems(user, context),
+      ),
     );
   }
 }
