@@ -81,13 +81,13 @@ class _SettingsInputState extends State<SettingsInput> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        buildInputRow(carbs, "Target Carbs", (value) {
+        buildInputRow(carbs, "Target Carbs:", (value) {
           setState(() => carbs = value);
         }),
-        buildInputRow(protein, "Target Protein", (value) {
+        buildInputRow(protein, "Target Protein:", (value) {
           setState(() => protein = value);
         }),
-        buildInputRow(fat, "Target Fat", (value) {
+        buildInputRow(fat, "Target Fat:", (value) {
           setState(() => fat = value);
         }),
         buildSaveBtn(context, user),

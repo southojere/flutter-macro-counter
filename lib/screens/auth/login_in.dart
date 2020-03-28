@@ -166,8 +166,8 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       buildTitle(theme),
-                      buildFacebookButton(),
-                      buildText(theme, 'or', 12.0),
+                      // buildFacebookButton(),
+                      // buildText(theme, 'or', 12.0),
                       buildText(theme, 'Login with your email address', 12.0),
                       buildEmailPasswordInputField(
                           'email', 'your@email.com', false, theme),
