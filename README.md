@@ -1,5 +1,4 @@
 <h1>Flutter Macro Counter</h1>
-[in progress]
 
 Creating a simple macro counter that others and I can use to track carbs, protein, and fat intake throughout the day. 
 
